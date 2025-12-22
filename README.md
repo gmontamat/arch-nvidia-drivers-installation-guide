@@ -17,11 +17,17 @@ This is a quick tutorial on how you can install proprietary NVIDIA drivers for A
    `sudo pacman -Syu`
 2. Install required packages:
    `sudo pacman -S base-devel linux-headers git nano --needed`
-3. Install the AUR helper, yay
-   - `cd ~`
-   - `git clone https://aur.archlinux.org/yay.git`
-   - `cd yay`
-   - `makepkg -si`
+3. Install the AUR helper, yay or paru
+   - yay
+     - `cd ~`
+     - `git clone https://aur.archlinux.org/yay.git`
+     - `cd yay`
+     - `makepkg -si`
+   - paru
+     - `cd ~`
+     - `https://github.com/Morganamilo/paru.git`
+     - `cd paru`
+     - `makepkg -si`
 4. Enable multilib repository
    - `sudo nano /etc/pacman.conf`
    - Uncomment the following lines by removing the # -character at the start them
@@ -48,8 +54,9 @@ This is a quick tutorial on how you can install proprietary NVIDIA drivers for A
 3. Install the correct Base driver, OpenGL, and OpenGL (multilib) packages
    - Example: `yay -S nvidia-470xx-dkms nvidia-470xx-utils lib32-nvidia-470xx-utils`
 4. Install the corresponding nvidia-settings, for example with `yay -S nvidia-470xx-settings`
-5. If you install CUDA in your system, use the corresponding opencl: `yay -S opencl-nvidia-470xx`
-   - Note that lib32-opencl-nvidia packages are available but it should not be required
+5. If you use CUDA in your system, install the corresponding opencl-nvidia package: `yay -S opencl-nvidia-470xx`
+   - Remember to use a CUDA version compatible with your GPU, for example Maxwell supports up to CUDA 12.9, use `yay -S cuda-12.9`
+   - Note that lib32-opencl-nvidia packages are available but they should not be required
 
 ## Step 3: Enabling DRM kernel mode setting
 
