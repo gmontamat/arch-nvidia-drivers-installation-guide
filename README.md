@@ -41,21 +41,22 @@ This is a quick tutorial on how you can install proprietary NVIDIA drivers for A
 1. First find your [NVIDIA card from this list here](https://nouveau.freedesktop.org/CodeNames.html). Alternatively you can take a look at the [Gentoo wiki](https://wiki.gentoo.org/wiki/NVIDIA#Feature_support).
 2. Check what driver packages you need to install from the table below
 
-| Driver name                                        | Kernel           | Base driver       | OpenGL             | OpenGL (multilib)        | Settings              | OpenCL              |
-| -------------------------------------------------- | ---------------- | ----------------- | ------------------ | ------------------------ | --------------------- | ------------------- |
-| Turing (NV160/TUXXX) and newer                     | linux            | nvidia-open       | nvidia-utils       | lib32-nvidia-utils       | nvidia-settings       | opencl-nvidia       |
-| Turing (NV160/TUXXX) and newer                     | linux-lts        | nvidia-lts-open   | nvidia-utils       | lib32-nvidia-utils       | nvidia-settings       | opencl-nvidia       |
-| Turing (NV160/TUXXX) and newer                     | any other kernel | nvidia-open-dkms  | nvidia-utils       | lib32-nvidia-utils       | nvidia-settings       | opencl-nvidia       |
-| Maxwell (NV110), Pascal (NV130), and Volta (NV140) | any              | nvidia-580xx-dkms | nvidia-580xx-utils | lib32-nvidia-580xx-utils | nvidia-580xx-settings | opencl-nvidia-580xx |
-| Kepler (NVE0) series                               | any              | nvidia-470xx-dkms | nvidia-470xx-utils | lib32-nvidia-470xx-utils | nvidia-470xx-settings | opencl-nvidia-470xx |
-| GeForce 400/500/600 series cards [NVCx and NVDx]   | any              | nvidia-390xx-dkms | nvidia-390xx-utils | lib32-nvidia-390xx-utils | nvidia-390xx-settings | opencl-nvidia-390xx |
-| Tesla (NV50/G80-90-GT2XX)                          | any              | nvidia-340xx-dkms | nvidia-340xx-utils | lib32-nvidia-340xx-utils | nvidia-340xx-settings | opencl-nvidia-340xx |
+| Driver name                                        | Kernel           | Base driver       | OpenGL             | OpenGL (multilib)        | Settings              | OpenCL              | CUDA      |
+| -------------------------------------------------- | ---------------- | ----------------- | ------------------ | ------------------------ | --------------------- | ------------------- | ----------|
+| Turing (NV160/TUXXX) and newer                     | linux            | nvidia-open       | nvidia-utils       | lib32-nvidia-utils       | nvidia-settings       | opencl-nvidia       | cuda      |
+| Turing (NV160/TUXXX) and newer                     | linux-lts        | nvidia-lts-open   | nvidia-utils       | lib32-nvidia-utils       | nvidia-settings       | opencl-nvidia       | cuda      |
+| Turing (NV160/TUXXX) and newer                     | any other kernel | nvidia-open-dkms  | nvidia-utils       | lib32-nvidia-utils       | nvidia-settings       | opencl-nvidia       | cuda      |
+| Maxwell (NV110), Pascal (NV130), and Volta (NV140) | any              | nvidia-580xx-dkms | nvidia-580xx-utils | lib32-nvidia-580xx-utils | nvidia-580xx-settings | opencl-nvidia-580xx | cuda-12.9 |
+| Kepler (NVE0) series                               | any              | nvidia-470xx-dkms | nvidia-470xx-utils | lib32-nvidia-470xx-utils | nvidia-470xx-settings | opencl-nvidia-470xx | cuda-11.4 |
+| GeForce 400/500/600 series cards [NVCx and NVDx]   | any              | nvidia-390xx-dkms | nvidia-390xx-utils | lib32-nvidia-390xx-utils | nvidia-390xx-settings | opencl-nvidia-390xx | cuda-8.0  |
+| Tesla (NV50/G80-90-GT2XX)                          | any              | nvidia-340xx-dkms | nvidia-340xx-utils | lib32-nvidia-340xx-utils | nvidia-340xx-settings | opencl-nvidia-340xx | cuda-6.5  |
 
 3. Install the correct Base driver, OpenGL, and OpenGL (multilib) packages
-   - Example: `yay -S nvidia-470xx-dkms nvidia-470xx-utils lib32-nvidia-470xx-utils`
-4. Install the corresponding nvidia-settings, for example with `yay -S nvidia-470xx-settings`
-5. If you use CUDA in your system, install the corresponding opencl-nvidia package: `yay -S opencl-nvidia-470xx`
-   - Remember to use a CUDA version compatible with your GPU, for example Maxwell supports up to CUDA 12.9, use `yay -S cuda-12.9`
+   - Example: `yay -S nvidia-580xx-dkms nvidia-580xx-utils lib32-nvidia-580xx-utils`
+4. Install the corresponding nvidia-settings, for example with `yay -S nvidia-580xx-settings`
+5. If you need CUDA, install the corresponding opencl-nvidia package: `yay -S opencl-nvidia-580xx cuda-12.9 cudnn-9.10-cuda12.9`
+   - Expect fewer compatibility with Maxwell, Pascal, and older series
+   - Remember to use a CUDA version compatible with your GPU, e.g., Maxwell supports up to CUDA 12.9
    - Note that lib32-opencl-nvidia packages are available but they should not be required
 
 ## Step 3: Enabling DRM kernel mode setting
@@ -105,8 +106,9 @@ Setting the kernel parameter depends on what bootloader you are using. Complete 
 2. Open the file with your preferred editor.
    - `nano nvidia.hook`
 3. Find the line that says **Target=nvidia**.
-4. Replace the word **nvidia** with the base driver you installed, e.g., **nvidia-470xx-dkms**
+4. Replace the word **nvidia** with the base driver you installed, e.g., **nvidia-580xx-dkms**
    - The edited line should look something like this: **Target=nvidia-470xx-dkms**
+5. Repeat steps 3 and 4 with your kernel, e.g., **Target=linux-lts**
 5. Save the file with _CTRL+S_ and close nano with _CTRL+X_
 6. Move the file to **/etc/pacman.d/hooks/** with: `sudo mkdir -p /etc/pacman.d/hooks/ && sudo mv ./nvidia.hook /etc/pacman.d/hooks/`
 
