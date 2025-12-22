@@ -9,7 +9,9 @@
 
 ## Default Prerequisites
 
-This is a quick tutorial on how you can install proprietary NVIDIA drivers for Arch Linux. Please note if you are using anything other than the regular linux kernel, such as linux-lts, you need to make changes accordingly. All the commands marked `like this` are meant to be run on the terminal. **Do not reboot before you have finished all the steps below!**
+This is a quick tutorial on how you can install proprietary NVIDIA drivers for Arch Linux. Please note if you are using anything other than the regular linux kernel,
+such as linux-lts, you need to make changes accordingly. All the commands marked `like this` are meant to be run on the terminal.
+**Do not reboot before you have finished all the steps below!**
 
 ## Step 1: Installing required packages and enabling multilib
 
@@ -17,7 +19,7 @@ This is a quick tutorial on how you can install proprietary NVIDIA drivers for A
    `sudo pacman -Syu`
 2. Install required packages:
    `sudo pacman -S base-devel linux-headers git nano --needed`
-3. Install the AUR helper, yay or paru
+3. Install an AUR helper, yay or paru
    - yay
      - `cd ~`
      - `git clone https://aur.archlinux.org/yay.git`
@@ -38,7 +40,8 @@ This is a quick tutorial on how you can install proprietary NVIDIA drivers for A
 
 ## Step 2: Installing the driver packages
 
-1. First find your [NVIDIA card from this list here](https://nouveau.freedesktop.org/CodeNames.html). Alternatively you can take a look at the [Gentoo wiki](https://wiki.gentoo.org/wiki/NVIDIA#Feature_support).
+1. First find your [NVIDIA card from this list here](https://nouveau.freedesktop.org/CodeNames.html). Alternatively, you can take a look
+   at the [Gentoo wiki](https://wiki.gentoo.org/wiki/NVIDIA#Feature_support).
 2. Check what driver packages you need to install from the table below
 
 | Driver name                                        | Kernel           | Base driver       | OpenGL             | OpenGL (multilib)        | Settings              | OpenCL              | CUDA      |
@@ -55,9 +58,10 @@ This is a quick tutorial on how you can install proprietary NVIDIA drivers for A
    - Example: `yay -S nvidia-580xx-dkms nvidia-580xx-utils lib32-nvidia-580xx-utils`
 4. Install the corresponding nvidia-settings, for example with `yay -S nvidia-580xx-settings`
 5. If you need CUDA, install the corresponding opencl-nvidia package: `yay -S opencl-nvidia-580xx cuda-12.9 cudnn-9.10-cuda12.9`
-   - Expect fewer compatibility with Maxwell, Pascal, and older series
+   - Expect reduced compatibility with Maxwell, Pascal, and older series
+   - Packages such as ollama-cuda and opencv-cuda depend on cuda, you must first install the compatible version
    - Remember to use a CUDA version compatible with your GPU, e.g., Maxwell supports up to CUDA 12.9
-   - Note that lib32-opencl-nvidia packages are available but they should not be required
+   - Note that lib32-opencl-nvidia packages are also available if needed (very unlikely)
 
 ## Step 3: Enabling DRM kernel mode setting
 
@@ -107,10 +111,10 @@ Setting the kernel parameter depends on what bootloader you are using. Complete 
    - `nano nvidia.hook`
 3. Find the line that says **Target=nvidia**.
 4. Replace the word **nvidia** with the base driver you installed, e.g., **nvidia-580xx-dkms**
-   - The edited line should look something like this: **Target=nvidia-470xx-dkms**
+   - The edited line should look something like this: **Target=nvidia-580xx-dkms**
 5. Repeat steps 3 and 4 with your kernel, e.g., **Target=linux-lts**
-5. Save the file with _CTRL+S_ and close nano with _CTRL+X_
-6. Move the file to **/etc/pacman.d/hooks/** with: `sudo mkdir -p /etc/pacman.d/hooks/ && sudo mv ./nvidia.hook /etc/pacman.d/hooks/`
+6. Save the file with _CTRL+S_ and close nano with _CTRL+X_
+7. Move the file to **/etc/pacman.d/hooks/** with: `sudo mkdir -p /etc/pacman.d/hooks/ && sudo mv ./nvidia.hook /etc/pacman.d/hooks/`
 
 ## Step 4: Reboot and enjoy!
 
