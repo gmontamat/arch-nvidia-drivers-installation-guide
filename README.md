@@ -58,7 +58,9 @@ such as linux-lts, you need to make changes accordingly. All the commands marked
    - Example: `yay -S nvidia-580xx-dkms nvidia-580xx-utils lib32-nvidia-580xx-utils`
 4. Install the corresponding nvidia-settings, for example with `yay -S nvidia-580xx-settings`
 5. If you need CUDA, install the corresponding opencl-nvidia package, e.g. `yay -S opencl-nvidia-580xx`
-   - The CUDA toolkit is backward compatible, but many features introduced will not be available in older series
+   - Expect reduced compatibility for older series (e.g. Maxwell supports up to CUDA 12.9)
+     - `ollama-cuda` is built against CUDA 13 so you either need `ollama-cuda12-bin` or use docker
+     - `yay -S cudnn9.10-cuda12.9 nccl-cuda12.9 cuda-12.9` may help build your packages
    - Note that lib32-opencl-nvidia packages are also available if needed (very unlikely)
 
 ## Step 3: Enabling DRM kernel mode setting
